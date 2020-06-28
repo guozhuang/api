@@ -1,10 +1,10 @@
 package main
 
 import (
-	app2 "api/app"
+	"api/cmd"
 )
 
 func main() {
-	app := app2.Init()
+	app := cmd.Init()
 	app.Run()
 }
