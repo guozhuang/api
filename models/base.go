@@ -1,14 +1,20 @@
 package models
 
-import "api/utils/inject"
+import (
+	"api/provider"
+	"api/utils/inject"
+)
+
+var baseProvider = &provider.BaseProvider{}
 
 //model层同样不进行分层：实践中很多标准库也是这种结构
 type BaseModels struct {
-	HelloModel *HelloModel  `auto:"helloModel"`
-	TestModel  *TestModel   `auto:"testModel"`
+	HelloModel *HelloModel `auto:"helloModel"`
+	TestModel  *TestModel  `auto:"testModel"`
 }
 
-func (m *BaseModels) New () {
+func (m *BaseModels) New() {
+	baseProvider.New()
 	inject.Register("baseModel", m)
 	inject.Inject()
 }
