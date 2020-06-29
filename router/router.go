@@ -1,7 +1,7 @@
 package router
 
 import (
-	 "api/controller"
+	"api/controller"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,11 +11,10 @@ func Configure(app *gin.Engine) {
 	controllers := &controller.Controllers{}
 	controllers.New()
 
-
 	//通用的路由配置
 	v1 := app.Group("/")
 	{
-		v1.GET("/get/user/:userId", controllers.HelloController.GetUserId)
-		v1.GET("/get/test/:userId", controllers.TestController.GetFirstId)
+		v1.GET("/get/user/:userId", controllers.Hello.GetUserId)
+		v1.GET("/get/test/:userId", controllers.Test.GetFirstId)
 	}
 }
