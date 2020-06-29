@@ -8,7 +8,8 @@ import (
 var userRedis = &redis.Redis{}
 
 func init() {
-	userRedis.NewPool(config.RedisServerSetting.User)
+	userRedis.ServerAddr = config.RedisServerSetting.User
+	userRedis.NewPool()
 }
 
 type Provider struct {

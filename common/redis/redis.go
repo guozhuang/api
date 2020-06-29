@@ -9,16 +9,19 @@ import (
 
 //redis操作标准包【进行每个方法的标准化实现】
 type Redis struct {
-	Pool *redigo.Pool
+	Pool       *redigo.Pool
+	ServerAddr string
 }
 
-func (redis *Redis) NewPool(serverAddr string) {
+func (redis *Redis) NewPool() {
+	//todo:需要考虑服务的ip切换问题，所以应该在provider内封装一个对应更新的方法【应该完善到redis结构体中：关联相应的provider】
 	redis.Pool = &redigo.Pool{
 		MaxIdle:     config.RedisCommonSetting.MaxIdle, //空闲数
 		IdleTimeout: config.RedisCommonSetting.IdleTimeout,
 		MaxActive:   config.RedisCommonSetting.MaxActive, //最大数
 		Dial: func() (redigo.Conn, error) {
-			c, err := redigo.Dial("tcp", serverAddr)
+			c, err := redigo.Dial("tcp", redis.ServerAddr)
+			//因为如果该服务进行切换的话，仅仅是初始化的时候拿到连接池，是不足以保证后续服务的稳定性
 			return c, err
 		},
 		TestOnBorrow: func(c redigo.Conn, t time.Time) error {
