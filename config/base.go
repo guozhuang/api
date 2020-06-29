@@ -34,9 +34,17 @@ type RedisCommon struct {
 
 var RedisCommonSetting = &RedisCommon{}
 
+type RedisServer struct {
+	//嵌入配置项
+	User string
+	Test string
+}
+
+var RedisServerSetting = &RedisServer{}
+
 var cfg *ini.File
 
-func Init() {
+func init() {
 	var err error
 
 	cfg, err = ini.Load("config/app.ini")
@@ -48,16 +56,29 @@ func Init() {
 	if AppSetting.RunMode == gin.DebugMode {
 		cfg, err = ini.Load("config/server/dev.ini")
 		if err != nil {
-			log.Fatalf("setting.Setup, fail to parse 'conf/dev/dev.ini': %v", err)
+			log.Fatalf("setting.Setup, fail to parse 'conf/server/dev.ini': %v", err)
+		}
+
+		cfg, err = ini.Load("config/db/dev.ini")
+		if err != nil {
+			log.Fatalf("setting.Setup, fail to parse 'conf/db/dev.ini': %v", err)
 		}
 	} else {
-		cfg, err = ini.Load("config/production/production.ini")
+		cfg, err = ini.Load("config/server/production.ini")
 		if err != nil {
-			log.Fatalf("setting.Setup, fail to parse 'conf/production/production.ini': %v", err)
+			log.Fatalf("setting.Setup, fail to parse 'conf/server/production.ini': %v", err)
+		}
+
+		cfg, err = ini.Load("config/db/production.ini")
+		if err != nil {
+			log.Fatalf("setting.Setup, fail to parse 'conf/db/production.ini': %v", err)
 		}
 	}
 
 	mapTo("server", ServerSetting)
+
+	//进行db的基础配置加载
+	mapTo("redisServer", RedisServerSetting)
 
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
 	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second

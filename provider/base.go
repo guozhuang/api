@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"api/provider/test"
 	"api/provider/user"
 	"api/utils/inject"
 )
@@ -8,10 +9,11 @@ import (
 //统一对外结构体
 type BaseProvider struct {
 	User *user.Provider `auto:"userProvider"`
+	Test *test.Provider `auto:"testProvider"`
 }
 
 func (provider *BaseProvider) New() {
-	//动态将相应服务注册在相应结构内，然后挂载到baseProvider内
+	//需要注意挂载provider下的tag需要和内部保持一致
 	inject.Register("baseProvider", provider)
 	inject.Inject()
 }

@@ -11,6 +11,8 @@ func (hello *HelloModel) GetHelloData(id string) string {
 	//以及连接池的初始化
 	id = baseProvider.User.RedisProvider.GetUserName(id)
 
+	id = baseProvider.Test.RedisProvider.GetUserName(id)
+
 	id = baseProvider.User.MongoProvider.GetMongoName(id)
 
 	return id

@@ -5,10 +5,10 @@ import (
 	"api/config"
 )
 
-var userRedis = &redis.Redis{}
+var testRedis = &redis.Redis{}
 
 func init() {
-	userRedis.NewPool(config.RedisServerSetting.User)
+	testRedis.NewPool(config.RedisServerSetting.Test)
 }
 
 type Provider struct {
@@ -16,6 +16,6 @@ type Provider struct {
 }
 
 func (provider *Provider) GetUserName(userId string) string {
-	redisValue := userRedis.Get("test")
+	redisValue := testRedis.Get("test")
 	return userId + redisValue + " "
 }
