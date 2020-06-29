@@ -18,5 +18,13 @@ type Provider struct {
 
 func (provider *Provider) GetUserName(userId string) string {
 	redisValue := userRedis.Get("test")
+
+	keys := make([]string, 0)
+	keys = append(keys, "test")
+	keys = append(keys, "hello")
+	data := userRedis.MGet(keys)
+	for key, value := range data {
+		userId += "key=" + key + " ,value=" + value
+	}
 	return userId + redisValue + " "
 }

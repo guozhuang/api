@@ -17,6 +17,7 @@ type Provider struct {
 }
 
 func (provider *Provider) GetUserName(userId string) string {
+	testRedis.Set("test", "new set")
 	redisValue := testRedis.Get("test")
 	return userId + redisValue + " "
 }

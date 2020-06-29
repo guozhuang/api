@@ -61,3 +61,32 @@ func (redis *Redis) Get(key string) string {
 
 	return data
 }
+
+func (redis *Redis) Set(key, value string) {
+	_, err := redigo.String(redis.Exec("set", key, value))
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+//不定长mget
+func (redis *Redis) MGet(keys []string) map[string]string {
+	result := make(map[string]string)
+
+	args := make([]interface{}, 0)
+	for i := 1; i < len(keys); i++ {
+		args = append(args, keys[i])
+	}
+
+	reply, _ := redigo.Strings(redis.Exec("MGET", keys[0], args...))
+
+	for i := 0; i < len(reply); i++ {
+		result[keys[i]] = reply[i]
+	}
+
+	return result
+}
+
+func (redis *Redis) MSet(data map[string]string) {
+	//
+}
