@@ -11,9 +11,11 @@ import (
 type Redis struct {
 	Pool       *redigo.Pool
 	ServerAddr string
+	IsCluster  bool //标记是否是集群
 }
 
 func (redis *Redis) NewPool() {
+	//todo:需要考虑对集群的适配支持
 	//todo:需要考虑服务的ip切换问题，所以应该在provider内封装一个对应更新的方法【应该完善到redis结构体中：关联相应的provider】
 	redis.Pool = &redigo.Pool{
 		MaxIdle:     config.RedisCommonSetting.MaxIdle, //空闲数
@@ -87,6 +89,10 @@ func (redis *Redis) MGet(keys []string) map[string]string {
 	return result
 }
 
-func (redis *Redis) MSet(data map[string]string) {
-	//
+func (redis *Redis) Expire(key string, ttl int) {
+	//设置过期时间
+}
+
+func (redis *Redis) HGet(key string, hashKey string) {
+	//hash操作
 }
