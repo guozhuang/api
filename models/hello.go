@@ -1,5 +1,7 @@
 package models
 
+import "api/editor"
+
 type HelloModel struct {
 	//
 }
@@ -16,4 +18,14 @@ func (hello *HelloModel) GetHelloData(id string) string {
 	id = baseProvider.User.MongoProvider.GetMongoName(id)
 
 	return id
+}
+
+//形成对editor的使用
+func (hello *HelloModel) GetUserName(id string) string {
+	userEditor := editor.GetUserEditor(id)
+	userEditor.UserName = "测试"
+	userEditor.Save()
+
+	userEditor = editor.GetUserEditor(id)
+	return userEditor.UserName
 }

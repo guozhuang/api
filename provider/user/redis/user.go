@@ -28,3 +28,14 @@ func (provider *Provider) GetUserName(userId string) string {
 	}
 	return userId + redisValue + " "
 }
+
+func (provider *Provider) GetUserInfo(userId string) string {
+	//设置一个key
+	redisValue := userRedis.Get(userId)
+
+	return redisValue
+}
+
+func (provider *Provider) SetUserInfo(userId, data string) {
+	userRedis.Set(userId, data)
+}
