@@ -30,7 +30,6 @@ func (provider *Provider) GetUserName(userId string) string {
 }
 
 func (provider *Provider) GetUserInfo(userId string) string {
-	//设置一个key
 	redisValue := userRedis.Get(userId)
 
 	return redisValue

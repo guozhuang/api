@@ -42,6 +42,15 @@ type RedisServer struct {
 
 var RedisServerSetting = &RedisServer{}
 
+type UserMongoServer struct {
+	MongodbAddr     string
+	MongodbName     string
+	MongodbUser     string
+	MongodbPassword string
+}
+
+var UserMongoServerSetting = &UserMongoServer{}
+
 var cfg *ini.File
 
 func init() {
@@ -79,6 +88,7 @@ func init() {
 
 	//进行db的基础配置加载
 	mapTo("redisServer", RedisServerSetting)
+	mapTo("UserMongoServer", UserMongoServerSetting)
 
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
 	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second

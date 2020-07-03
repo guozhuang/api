@@ -5,7 +5,6 @@ import (
 	"api/utils/inject"
 )
 
-//editor同样需要使用provider//形成一个标准的获取provider方法
 var baseProvider *provider.BaseProvider
 
 type BaseModels struct {
@@ -13,8 +12,8 @@ type BaseModels struct {
 	Test  *TestModel  `auto:"testModel"`
 }
 
-func (m *BaseModels) New() {
+func (model *BaseModels) New() {
 	baseProvider = provider.GetProvider()
-	inject.Register("baseModel", m)
+	inject.Register("baseModel", model)
 	inject.Inject()
 }

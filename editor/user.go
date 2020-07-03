@@ -1,16 +1,13 @@
 package editor
 
 import (
+	"api/base"
 	"encoding/json"
 	"fmt"
-	"github.com/tidwall/gjson"
 )
 
-//作为nosql的数据源的实例转换使用
-type User struct {
-	UserId   string `json:"user_id"`
-	UserName string `json:"user_name"`
-}
+//
+type User base.User
 
 func (user *User) Save() {
 	jsonStr, err := json.Marshal(user)
@@ -18,17 +15,16 @@ func (user *User) Save() {
 		fmt.Println("json user is error")
 	}
 	baseProvider.User.RedisProvider.SetUserInfo(user.UserId, string(jsonStr))
+
+	//进行mongo存储
 }
 
 func GetUserEditor(userId string) *User {
 	user := new(User)
-	user.UserId = userId
-	editorData := baseProvider.User.RedisProvider.GetUserInfo(userId)
-	if editorData != "" {
-		//进行json解析
-		user.UserName = gjson.Get(editorData, "user_name").String()
-	}
 
+	editorData := baseProvider.User.RedisProvider.GetUserInfo(userId)
+
+	json.Unmarshal([]byte(editorData), user)
 	return user
 }
 

@@ -12,7 +12,8 @@ type HelloController struct {
 func (hello *HelloController) GetUserId(c *gin.Context) {
 	userId := c.Param("userId")
 
-	userName := BaseModel.Hello.GetUserName(userId)
+	userName := BaseModel.Hello.GetHelloData(userId)
+	//userName := BaseModel.Hello.GetUserName(userId)
 
 	c.JSON(200, gin.H{"name": userName})
 }
